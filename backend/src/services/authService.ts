@@ -16,7 +16,9 @@ export async function signUp(email:string, password:string, confirmPass:string){
 
     if(checkUser) throw verifyError(401,"This email was already registered!");
 
-    await authMethods.signUp(user)
+    await authMethods.signUp(user).catch(
+        ()=>
+        verifyError(500,"Database error, couldn't insert user data!"))
 }
 
 export async function signIn(email:string, password:string, confirmPass:string){
