@@ -12,5 +12,5 @@ export async function verifyPassword(password:string, hash:string){
 }
 
 export function generateToken(userId:number){
-return jwt.sign({userId},process.env.JWT_SECRET,{expiresIn:1200});
+return jwt.sign({userId},process.env.JWT_SECRET,{expiresIn:'1d'});
 }

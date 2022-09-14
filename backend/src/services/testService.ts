@@ -28,4 +28,16 @@ export async function addTest(name:string,
         await testMethods.addTest(test).catch(()=>{
             verifyError(500,"Database error, couldn't insert test data!")
         });
-    }
+    };
+
+   export async function testsByDiscipline(){
+    const tests = await testMethods.findTestByDisciplineId();
+
+    return tests;
+   }
+
+   export async function testsByTeacher(){
+    const tests = await testMethods.findTestByTeacherId();
+
+    return tests;
+   }
