@@ -2,8 +2,8 @@ import app from "../src/app";
 import supertest from "supertest";
 import prisma from "../src/database/prisma";
 import { login } from "./testUtils";
-import { __userData } from "./factories/userData";
-import { __testData } from "./factories/testData";
+import { __userFactory } from "./factories/userFactory";
+import { __testFactory } from "./factories/testFactory";
 
 beforeEach(async () => {
     await prisma.$executeRaw`TRUNCATE TABLE "Tests"`;
@@ -11,7 +11,7 @@ beforeEach(async () => {
 
 describe('POST /test/new', () => {
     it("returns 500 when header x-access-token isn't declared", async () => {
-        const test = __testData();
+        const test = __testFactory();
         await supertest(app).post('/test/new').send(test);
 
         const result =  await supertest(app).post('/test/new').send(test);
@@ -20,7 +20,7 @@ describe('POST /test/new', () => {
     });
 
     it("returns 401 when authorization token isn't sent", async () => {
-        const test = __testData();
+        const test = __testFactory();
         await supertest(app).post('/test/new').send(test);
         const token = '';
 
@@ -32,7 +32,7 @@ describe('POST /test/new', () => {
     });
 
     it("returns 422 when sent invalid test object", async () => {
-        const user = __userData();
+        const user = __userFactory();
         const { text:token } = await login(user);
 
         const invalidTest = {
@@ -50,8 +50,8 @@ describe('POST /test/new', () => {
     });
 
     it("returns 409 when there's a test registered with same Name", async () => {
-        const user = __userData();
-        const test = __testData();
+        const user = __userFactory();
+        const test = __testFactory();
         const { text:token } = await login(user);
        
         await supertest(app).post('/test/new')
@@ -66,7 +66,7 @@ describe('POST /test/new', () => {
     });
 
     it("returns 404 if categoryId doesn't match any registered category", async () => {
-        const user = __userData();
+        const user = __userFactory();
         const { text:token } = await login(user);
 
         const invalidCategoryTest = {
@@ -84,7 +84,7 @@ describe('POST /test/new', () => {
     });
 
     it("returns 404 if teacherDisciplineId doesn't match any registered discipline", async () => {
-        const user = __userData();
+        const user = __userFactory();
         const { text:token } = await login(user);
 
         const invalidDisciplineTest = {
@@ -102,8 +102,8 @@ describe('POST /test/new', () => {
     });
 
     it("returns 201 when successfully register a new test!", async () => {
-        const user = __userData();
-        const test = __testData();
+        const user = __userFactory();
+        const test = __testFactory();
         const { text:token } = await login(user);
 
         const result =  await supertest(app).post('/test/new')

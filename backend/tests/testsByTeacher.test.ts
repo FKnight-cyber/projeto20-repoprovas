@@ -2,7 +2,7 @@ import app from "../src/app";
 import supertest from "supertest";
 import prisma from "../src/database/prisma";
 import { login } from "./testUtils";
-import { __userData } from "./factories/userData";
+import { __userFactory } from "./factories/userFactory";
 
 beforeEach(async () => {
     await prisma.$executeRaw`TRUNCATE TABLE "Users"`;
@@ -30,7 +30,7 @@ describe('GET /teachers/:id/tests', () => {
 
     it("returns 200 and all tests by teachers!", async () => {
         const id = 1;
-        const user = __userData();
+        const user = __userFactory();
         const { text:token } = await login(user);
 
         const result =  await supertest(app).get(`/teachers/${id}/tests`)

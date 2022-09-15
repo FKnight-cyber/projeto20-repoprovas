@@ -2,7 +2,7 @@ import app from "../src/app";
 import supertest from "supertest";
 import prisma from "../src/database/prisma";
 import { login } from "./testUtils";
-import { __userData } from "./factories/userData";
+import { __userFactory } from "./factories/userFactory";
 
 beforeEach(async () => {
     await prisma.$executeRaw`TRUNCATE TABLE "Users"`;
@@ -23,7 +23,7 @@ describe('POST /sign-in', () => {
     });
 
     it("returns 401 when email isn't registered!", async () => {
-        const unregisteredUser = __userData();
+        const unregisteredUser = __userFactory();
 
         const result = await supertest(app).post('/sign-in').send(unregisteredUser);
 
@@ -32,7 +32,7 @@ describe('POST /sign-in', () => {
 
     it("returns 401 when password is wrong", async () => {
 
-        const user = __userData();
+        const user = __userFactory();
 
         await supertest(app).post('/sign-up').send(user);
 
@@ -46,7 +46,7 @@ describe('POST /sign-in', () => {
     });
 
     it("returns 200 when successfully login", async () => {
-        const user = __userData();
+        const user = __userFactory();
 
         const result = await login(user);
 

@@ -14,7 +14,18 @@ export async function findTestByDisciplineId(id:number){
         where:{
             disciplineId:id
         },include:{
-            Tests:true,
+            disciplines:{
+                select:{
+                    name:true
+                }
+            },
+            Tests:{
+                select:{
+                    id:true,
+                    name:true,
+                    pdfUrl:true
+                }
+            },
             teachers:true
         }
     })
@@ -22,11 +33,24 @@ export async function findTestByDisciplineId(id:number){
 
 export async function findTestByTeacherId(id:number){
     return prisma.teachers.findMany({
+        where:{
+            id:id
+        },
         include:{
             TeachersDisciplines:{
                 include:{
-                    disciplines:true,
-                    Tests:true
+                    disciplines:{
+                        select:{
+                            name:true
+                        }
+                    },
+                    Tests:{
+                        select:{
+                            id:true,
+                            name:true,
+                            pdfUrl:true
+                        }
+                    }
                 }
             }
         }
