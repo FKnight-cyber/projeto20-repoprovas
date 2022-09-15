@@ -1,6 +1,11 @@
 import app from '../src/app';
 import supertest from 'supertest';
 import prisma from '../src/database/prisma';
+import { __userData } from "./factories/userData";
+
+beforeEach(async () => {
+    await prisma.$executeRaw`TRUNCATE TABLE "Users"`;
+});
 
 describe('POST /sign-up', () => {
     it('returns 422 when sending invalid user object', async () => {
@@ -27,33 +32,19 @@ describe('POST /sign-up', () => {
     });
 
     it("returns 401 when the email was already registered!", async () => {
-
-        const user3 = {
-            email: "fulanodetal3@gmail.com",
-            password: "1234",
-            confirmPass: "1234"
-        };
+        const user = __userData();
         
-        await supertest(app).post('/sign-up').send(user3);
+        await supertest(app).post('/sign-up').send(user);
 
-        const result = await supertest(app).post('/sign-up').send(user3);
+        const result = await supertest(app).post('/sign-up').send(user);
 
         expect(result.status).toBe(401);
     });
 
     it('returns 201 when successfully register an user', async () => {
-
-        const user = {
-            email: "fulanodetal2@gmail.com",
-            password: "1234",
-            confirmPass: "1234"
-        };
-
-        await prisma.$executeRaw`TRUNCATE TABLE "Users"`;
+        const user = __userData();
 
         const result = await supertest(app).post('/sign-up').send(user);
-
-        console.log(result)
 
         expect(result.status).toBe(201);
     });

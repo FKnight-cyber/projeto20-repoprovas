@@ -2,12 +2,11 @@ import app from "../src/app";
 import supertest from "supertest";
 import prisma from "../src/database/prisma";
 import { login } from "./testUtils";
+import { __userData } from "./factories/userData";
 
-const user = {
-    email: "fulanodetal@gmail.com",
-    password: "1234",
-    confirmPass: "1234"
-};
+beforeEach(async () => {
+    await prisma.$executeRaw`TRUNCATE TABLE "Users"`;
+});
 
 describe('GET /disciplines/tests', () => {
     it("returns 500 when header x-access-token isn't declared", async () => {
@@ -28,6 +27,7 @@ describe('GET /disciplines/tests', () => {
     });
 
     it("returns 200 and all tests by discipline!", async () => {
+        const user = __userData();
         const { text:token } = await login(user);
 
         const result =  await supertest(app).get('/disciplines/tests')
