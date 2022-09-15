@@ -8,18 +8,20 @@ beforeEach(async () => {
     await prisma.$executeRaw`TRUNCATE TABLE "Users"`;
 });
 
-describe('GET /teachers/tests', () => {
+describe('GET /teachers/:id/tests', () => {
     it("returns 500 when header x-access-token isn't declared", async () => {
-        const result =  await supertest(app).get('/teachers/tests').send();
+        const id = 1;
+        const result =  await supertest(app).get(`/teachers/${id}/tests`).send();
 
         expect(result.status).toBe(500);
     });
 
     it("returns 401 when authorization token isn't sent", async () => {
-        await supertest(app).get('/teachers/tests').send();
+        const id = 1;
+        await supertest(app).get(`/teachers/${id}/tests`).send();
         const token = '';
 
-        const result = await supertest(app).get('/teachers/tests')
+        const result = await supertest(app).get(`/teachers/${id}/tests`)
         .set('x-access-token',token)
         .send();
 
@@ -27,11 +29,11 @@ describe('GET /teachers/tests', () => {
     });
 
     it("returns 200 and all tests by teachers!", async () => {
-
+        const id = 1;
         const user = __userData();
         const { text:token } = await login(user);
 
-        const result =  await supertest(app).get('/teachers/tests')
+        const result =  await supertest(app).get(`/teachers/${id}/tests`)
         .set('x-access-token',token)
         .send();
 

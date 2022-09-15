@@ -14,13 +14,18 @@ export async function newTest(req:Request, res:Response){
 };
 
 export async function disciplineTests(req:Request, res:Response){
-    const tests = await testService.testsByDiscipline();
+    const id:number  = Number(req.params.id);
+
+    const tests = await testService.testsByDiscipline(id);
 
     res.status(200).send(tests);
 };
 
 export async function teacherTests(req:Request, res:Response){
-    const tests = await testService.testsByTeacher();
+    const id:number  = Number(req.params.id);
+
+    const tests = await testService.testsByTeacher(id);
 
     res.status(200).send(tests);
 };
+

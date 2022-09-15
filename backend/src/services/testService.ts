@@ -30,14 +30,17 @@ export async function addTest(name:string,
         });
     };
 
-   export async function testsByDiscipline(){
-    const tests = await testMethods.findTestByDisciplineId();
+    export async function testsByDiscipline(id:number){
+    const tests = await testMethods.findTestByDisciplineId(id);
 
     return tests;
-   }
+}
 
-   export async function testsByTeacher(){
-    const tests = await testMethods.findTestByTeacherId();
+export async function testsByTeacher(id:number){
+    const tests = await testMethods.findTestByTeacherId(id);
 
     return tests;
-   }
+};
+
+
+
