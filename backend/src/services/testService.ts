@@ -10,7 +10,7 @@ export async function addTest(name:string,
     teacherDisciplineId:number){
 
         const checkTest = await testMethods.findTestByName(name);
-        if(checkTest) throw verifyError(401,"There's already a test registered with this name!");
+        if(checkTest) throw verifyError(409,"There's already a test registered with this name!");
 
         const category = await findCategoryById(categoryId);
         if(!category) throw verifyError(404,"This category wasn't registered!");

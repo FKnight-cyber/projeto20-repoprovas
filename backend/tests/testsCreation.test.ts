@@ -49,7 +49,7 @@ describe('POST /test/new', () => {
         expect(result.status).toBe(422);
     });
 
-    it("returns 401 when there's a test registered with same Name", async () => {
+    it("returns 409 when there's a test registered with same Name", async () => {
         const user = __userData();
         const test = __testData();
         const { text:token } = await login(user);
@@ -62,7 +62,7 @@ describe('POST /test/new', () => {
         .set('x-access-token',token)
         .send(test);
 
-        expect(result.status).toBe(401);
+        expect(result.status).toBe(409);
     });
 
     it("returns 404 if categoryId doesn't match any registered category", async () => {

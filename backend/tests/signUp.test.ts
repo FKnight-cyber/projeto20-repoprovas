@@ -31,14 +31,14 @@ describe('POST /sign-up', () => {
         expect(result.status).toBe(422);
     });
 
-    it("returns 401 when the email was already registered!", async () => {
+    it("returns 409 when the email was already registered!", async () => {
         const user = __userData();
         
         await supertest(app).post('/sign-up').send(user);
 
         const result = await supertest(app).post('/sign-up').send(user);
 
-        expect(result.status).toBe(401);
+        expect(result.status).toBe(409);
     });
 
     it('returns 201 when successfully register an user', async () => {
