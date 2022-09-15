@@ -34,8 +34,8 @@ RepoProvas is a back-end application, it simulates an API that manages tests.
 
 -   User sign-up and sign-in
 -   Create tests.
--   View tests ordered by disciplines.
--   View tests ordered by teachers.
+-   View tests ordered by discipline id.
+-   View tests ordered by teacher id.
 
 </br>
 
@@ -131,11 +131,11 @@ POST /test/new
 
 #
 
-### View tests ordered by disciplines.
+### View tests ordered by discipline id.
 
 ```
 https://ryan-repoprovas.herokuapp.com
-GET /disciplines/tests
+GET /disciplines/:id/tests
 ```
 
 #### Request:
@@ -143,49 +143,46 @@ GET /disciplines/tests
 | Headers          | Type    | Description                        |
 | :--------------- | :-------| :--------------------------------- |
 | `x-access-token` | `string`| **Required**. authentication token |
+
+####
+
+| Params  | Type     | Description                |
+| :------ | :------- | :------------------------- |
+| `id`    | `integer`| **Required**. disciplineId |
 
 #### Response:
 
 ```json
 [
   {
-    "id": 4,
-    "name": "Humildade",
-    "termId": 1,
-    "TeachersDisciplines": [
-       {
-         "id": 4,
-         "teacherId": 2,
-         "disciplineId": 4,
-         "Tests": [
-           {
-             "id": 1,
-              "name": "Prova 5",
-              "pdfUrl": "https://www.doraci.com.br/downloads/matematica/fund-mat-elem_01.pdf",
-              "categoryId": 1,
-              "teacherDisciplineId": 4,
-              "categories": {
-              "name": "Projeto"
-             }
-           }
-          ],
-          "teachers": {
-            "id": 2,
-            "name": "Bruna Hamori"
-          }
-        }
-     ]
+    "id": 1,
+    "teacherId": 1,
+    "disciplineId": 1,
+    "disciplines": {
+      "name": "HTML e CSS"
+    },
+    "Tests": [
+      {
+        "id": 129,
+        "name": "beak",
+        "pdfUrl": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/730.jpg.pdf"
+      }
+    ],
+    "teachers": {
+      "id": 1,
+      "name": "Diego Pinho"
+    }
   },
   ...
 ]
 ```
 #
 
-### View tests ordered by teachers.
+### View tests ordered by teacher id.
 
 ```
 https://ryan-repoprovas.herokuapp.com
-GET /teachers/tests
+GET /teachers/:id/tests
 ```
 
 #### Request:
@@ -194,33 +191,37 @@ GET /teachers/tests
 | :--------------- | :-------| :--------------------------------- |
 | `x-access-token` | `string`| **Required**. authentication token |
 
+####
+
+| Params  | Type     | Description             |
+| :------ | :------- | :---------------------- |
+| `id`    | `integer`| **Required**. teacherId |
+
 #### Response:
 
 ```json
-[
- {
-    "id": 4,
-    "teacherId": 2,
-    "disciplineId": 4,
-    "Tests": [
+ [
+  {
+    "id": 1,
+    "name": "Diego Pinho",
+    "TeachersDisciplines": [
       {
-        "name": "Prova 5",
-        "pdfUrl": "https://www.doraci.com.br/downloads/matematica/fund-mat-elem_01.pdf"
-      }
-    ],
-    "disciplines": {
-      "id": 4,
-      "name": "Humildade",
-      "termId": 1,
-      "terms": {
-        "number": 1
+        "id": 1,
+        "teacherId": 1,
+        "disciplineId": 1,
+        "disciplines": {
+          "name": "HTML e CSS"
+        },
+        "Tests": [
+          {
+            "id": 129,
+            "name": "beak",
+            "pdfUrl": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/730.jpg.pdf"
+          }
+        ]
       }
     },
-    "teachers": {
-      "name": "Bruna Hamori"
-    }
-  },
-  ...
+   ...   
  ]
 ```
 
