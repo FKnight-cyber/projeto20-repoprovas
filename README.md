@@ -260,9 +260,9 @@ Create database
 
 The application is currently deployed on Heroku, but if you want to run it locally...
 
-cd ../../projeto19-drivenpass/backend
+cd ../../projeto20-repoprovas/backend
 
-check your .env and inform your DATABASE_URL
+check your .env and inform your DATABASE_URL, PORT and JWT_SECRET
 
 ```bash
   run npx prisma migrate dev 
